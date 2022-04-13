@@ -32,12 +32,15 @@ namespace WpfTest.Services
                 }
             }
 
+            HandledItems = HandledItems.Distinct().ToList();
+
             return HandledItems;
         }
 
         public static string ConcatString(string _string)
         {
             var trimmed = _string.Trim();
+            trimmed = trimmed.Replace("\r", "");
             var index = trimmed.IndexOf(" ");
             if (index != -1)
             {

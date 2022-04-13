@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfTest"
         mc:Ignorable="d"
-        Title="Order MiscHistory" Height="500" Width="800"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -13,19 +12,23 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}">
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        Title="Order MiscHistory" Height="560" Width="900">
     <Grid>
         <TabControl Style="{StaticResource MaterialDesignTabControl}" x:Name="MyTabControl">
             <TabItem  Header="Place Order">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel>
-                        <!--<Label>Place list of items:</Label>-->
-                        <TextBox Background="WhiteSmoke" Name="TextBorre" Width="300" Height="300" Margin="30" AcceptsReturn="True"></TextBox>
-                        <Button Name="AddBtn" Click="AddBtn_Click" Height="30" Width="110">Add Items</Button>
+                        <Label HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="16" FontWeight="Bold">Place list of items:</Label>
+                        <Label HorizontalAlignment="Center" FontSize="12">Items will be separated by comma or a new row.</Label>
+                        <TextBox Background="WhiteSmoke" Name="TextBorre" Width="300" Height="300" Margin="20" AcceptsReturn="True" FontSize="16"></TextBox>
+                        <Button Name="AddBtn" Click="AddBtn_Click" Height="30" Width="110">Add items</Button>
                     </StackPanel>
                     <StackPanel>
-                        <!--<Label>Check if items are correct:</Label>-->
-                        <ListBox Background="WhiteSmoke" Width="300" Height="300" Margin="30" Name="MyListBox">
+                        <Label HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="15" FontWeight="Bold">Check if items are correct:</Label>
+                        <Label HorizontalAlignment="Center" FontSize="12">Place order will start processing all items.</Label>
+                        <ListBox Background="WhiteSmoke" Width="300" Height="300" Margin="20" Name="MyListBox" FontSize="16">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
@@ -36,14 +39,14 @@
                         </ListBox>
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                             <Button Name="RemoveItemBtn" Click="RemoveItemBtn_Click" Height="30" Width="140" Margin="0,0,20,0">Remove from list</Button>
-                            <Button Name="PlaceOrderBtn" Click="PlaceOrderBtn_Click" Height="30" Width="110">Place Order</Button>
+                            <Button Name="PlaceOrderBtn" Click="PlaceOrderBtn_Click" Height="30" Width="110">Place order</Button>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Running Orders">
                 <StackPanel>
-                    <ListView Margin="30" Name="OrdersListView" Height="300">
+                    <ListView Margin="30" Name="OrdersListView" Height="Auto" FontSize="16">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Item" Width="150" DisplayMemberBinding="{Binding Item}" />
@@ -60,6 +63,10 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock x:Name="StatusText" Margin="10" FontSize="24"></TextBlock>
+                        <fa:ImageAwesome x:Name="Spinner" Icon="Refresh" Spin="False" Height="30" Width="30" Visibility="Hidden" Margin="10" />
+                    </StackPanel>
                 </StackPanel>
             </TabItem>
         </TabControl>

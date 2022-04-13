@@ -60,11 +60,16 @@ namespace WpfTest
 
         private async Task PlaceOrders()
         {
+            Spinner.Spin = true;
+            Spinner.Visibility = Visibility.Visible;
+            StatusText.Text = "Placing Orders";
             var placedOrders = _orderService.SendOrder(items.ToList());
             await foreach (var order in placedOrders)
             {
                 orders.Add(order);
             }
+
+            StatusText.Text = "Waiting for orders to process";
 
             var finnishedOrders = _orderService.AwaitOrderStatus(orders.ToList());
             await foreach (var order in finnishedOrders)
@@ -74,7 +79,9 @@ namespace WpfTest
                 OrdersListView.Items.Refresh();
             }
 
-            MessageBox.Show("All Tasks are finished");
+            Spinner.Spin = false;
+            Spinner.Visibility = Visibility.Hidden;
+            StatusText.Text = "All tasks are finished";
         }
 
         private void RemoveItemBtn_Click(object sender, RoutedEventArgs e)
@@ -91,7 +98,6 @@ namespace WpfTest
             {
                 MessageBox.Show("No selected item to remove");
             }
-            
         }
     }
 }

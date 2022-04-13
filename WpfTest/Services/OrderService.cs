@@ -27,12 +27,13 @@ namespace WpfTest.Services
             {
                 var securityType = await LookupSecurityTypeFromItem(item);
 
-                if (securityType != null)
+                if (securityType != "NOT FOUND")
                 {
                     int orderId = await ordersClient.OrderMiscAsync("AHS_ADMIN", "BB", securityType, null, "HISTORY", item,
                     null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
                     var order = new Order(item, orderId);
+                    order.Message = "No existing item found, No existing item found, No existing item found";
                     //orders.Add(order);
                     yield return order;
                 }
@@ -63,9 +64,8 @@ namespace WpfTest.Services
             }
             else
             {
-                return null;
+                return "NOT FOUND";
             }
-
         }
 
         private async Task<Order> CheckOrderStatus(Order order)
