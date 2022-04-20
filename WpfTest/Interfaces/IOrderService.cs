@@ -8,5 +8,7 @@ namespace WpfTest.Services
     {
         IAsyncEnumerable<Order> AwaitOrderStatus(IEnumerable<Order> orders);
         IAsyncEnumerable<Order> SendOrder(List<string> items);
+        void CopyTableToText(List<Order> orders);
+        void CreateHtmlTable(List<Order> orders);
     }
 }

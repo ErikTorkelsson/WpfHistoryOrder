@@ -82,6 +82,8 @@ namespace WpfTest
             Spinner.Spin = false;
             Spinner.Visibility = Visibility.Hidden;
             StatusText.Text = "All tasks are finished";
+            CopyBtn.Visibility = Visibility.Visible;
+            CopyToTextBtn.Visibility = Visibility.Visible;
         }
 
         private void RemoveItemBtn_Click(object sender, RoutedEventArgs e)
@@ -98,6 +100,19 @@ namespace WpfTest
             {
                 MessageBox.Show("No selected item to remove");
             }
+        }
+
+        private void CopyBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var orderList = orders.ToList();
+            _orderService.CreateHtmlTable(orderList);
+
+        }
+
+        private void CopyToTextBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var orderList = orders.ToList();
+            _orderService.CopyTableToText(orderList);
         }
     }
 }

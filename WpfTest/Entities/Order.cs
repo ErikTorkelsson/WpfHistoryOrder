@@ -12,13 +12,16 @@ namespace WpfTest.Entities
         public int OrderId { get; set; }
         public string Status { get; set; }
         public string Message { get; set; }
+        public int RowsPre { get; set; }
+        public int RowsAfter { get; set; }
 
-        public Order(string item , int orderId)
+        public Order(string item , int orderId, int rowsPre)
         {
             Item = item;
             OrderId = orderId;
             Status = "PROCESSING";
             Message = "";
+            RowsPre = rowsPre;
         }
         public Order(string item, string status, string message)
         {
