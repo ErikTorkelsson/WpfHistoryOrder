@@ -663,100 +663,100 @@ namespace OrderReference
     public interface order_wsSoapChannel : OrderReference.order_wsSoap, System.ServiceModel.IClientChannel
     {
     }
-    
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.3")]
     public partial class order_wsSoapClient : System.ServiceModel.ClientBase<OrderReference.order_wsSoap>, OrderReference.order_wsSoap
     {
-        
+
         /// <summary>
         /// Implement this partial method to configure the service endpoint.
         /// </summary>
         /// <param name="serviceEndpoint">The endpoint to configure</param>
         /// <param name="clientCredentials">The client credentials</param>
         static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
-        
-        public order_wsSoapClient(EndpointConfiguration endpointConfiguration) : 
+
+        public order_wsSoapClient(EndpointConfiguration endpointConfiguration) :
                 base(order_wsSoapClient.GetBindingForEndpoint(endpointConfiguration), order_wsSoapClient.GetEndpointAddress(endpointConfiguration))
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
-        
-        public order_wsSoapClient(EndpointConfiguration endpointConfiguration, string remoteAddress) : 
+
+        public order_wsSoapClient(EndpointConfiguration endpointConfiguration, string remoteAddress) :
                 base(order_wsSoapClient.GetBindingForEndpoint(endpointConfiguration), new System.ServiceModel.EndpointAddress(remoteAddress))
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
-        
-        public order_wsSoapClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) : 
+
+        public order_wsSoapClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(order_wsSoapClient.GetBindingForEndpoint(endpointConfiguration), remoteAddress)
         {
             this.Endpoint.Name = endpointConfiguration.ToString();
             ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
-        
-        public order_wsSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+
+        public order_wsSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(binding, remoteAddress)
         {
         }
-        
+
         public System.Threading.Tasks.Task<int> OrderSecurityAsync(
-                    string Subscriber, 
-                    string SecurityType, 
-                    string SecurityTypeDesc, 
-                    string Isin, 
-                    string Cusip, 
-                    string Mic, 
-                    string Sedol, 
-                    string Ric, 
-                    string BBId, 
-                    string BBTicker, 
-                    string BBMkt, 
-                    string BBMktSector, 
-                    string CountryIssue, 
-                    string Ccy, 
-                    string ShortName, 
-                    string Name, 
-                    OrderReference.ahs_date Maturity, 
-                    OrderReference.ahs_float Strike, 
-                    string PutCall, 
-                    OrderReference.ahs_logical Urgent, 
+                    string Subscriber,
+                    string SecurityType,
+                    string SecurityTypeDesc,
+                    string Isin,
+                    string Cusip,
+                    string Mic,
+                    string Sedol,
+                    string Ric,
+                    string BBId,
+                    string BBTicker,
+                    string BBMkt,
+                    string BBMktSector,
+                    string CountryIssue,
+                    string Ccy,
+                    string ShortName,
+                    string Name,
+                    OrderReference.ahs_date Maturity,
+                    OrderReference.ahs_float Strike,
+                    string PutCall,
+                    OrderReference.ahs_logical Urgent,
                     string Message)
         {
             return base.Channel.OrderSecurityAsync(Subscriber, SecurityType, SecurityTypeDesc, Isin, Cusip, Mic, Sedol, Ric, BBId, BBTicker, BBMkt, BBMktSector, CountryIssue, Ccy, ShortName, Name, Maturity, Strike, PutCall, Urgent, Message);
         }
-        
+
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.Threading.Tasks.Task<OrderReference.OrderItemResponse> OrderReference.order_wsSoap.OrderItemAsync(OrderReference.OrderItemRequest request)
         {
             return base.Channel.OrderItemAsync(request);
         }
-        
+
         public System.Threading.Tasks.Task<OrderReference.OrderItemResponse> OrderItemAsync(
-                    string Subscriber, 
-                    string Source, 
-                    string SecurityType, 
-                    string SecurityTypeDesc, 
-                    string Item, 
-                    string Isin, 
-                    string Cusip, 
-                    string Mic, 
-                    string Sedol, 
-                    string Ric, 
-                    string BBId, 
-                    string BBTicker, 
-                    string BBMkt, 
-                    string BBMktSector, 
-                    string CountryIssue, 
-                    string Ccy, 
-                    string ShortName, 
-                    string Name, 
-                    OrderReference.ahs_date Maturity, 
-                    OrderReference.ahs_float Strike, 
-                    string PutCall, 
-                    OrderReference.OrderParameter[] Parameters, 
+                    string Subscriber,
+                    string Source,
+                    string SecurityType,
+                    string SecurityTypeDesc,
+                    string Item,
+                    string Isin,
+                    string Cusip,
+                    string Mic,
+                    string Sedol,
+                    string Ric,
+                    string BBId,
+                    string BBTicker,
+                    string BBMkt,
+                    string BBMktSector,
+                    string CountryIssue,
+                    string Ccy,
+                    string ShortName,
+                    string Name,
+                    OrderReference.ahs_date Maturity,
+                    OrderReference.ahs_float Strike,
+                    string PutCall,
+                    OrderReference.OrderParameter[] Parameters,
                     string BBUnique)
         {
             OrderReference.OrderItemRequest inValue = new OrderReference.OrderItemRequest();
@@ -785,48 +785,48 @@ namespace OrderReference
             inValue.BBUnique = BBUnique;
             return ((OrderReference.order_wsSoap)(this)).OrderItemAsync(inValue);
         }
-        
+
         public System.Threading.Tasks.Task<int> OrderMiscAsync(
-                    string Subscriber, 
-                    string Source, 
-                    string SecurityType, 
-                    OrderReference.SubscriberSet Set, 
-                    string Request, 
-                    string Item, 
-                    string Isin, 
-                    string Cusip, 
-                    string Mic, 
-                    string Sedol, 
-                    string Ric, 
-                    string BBId, 
-                    string BBTicker, 
-                    string BBMkt, 
-                    string BBMktSector, 
-                    string CountryIssue, 
-                    string Ccy, 
-                    string Name, 
-                    OrderReference.ahs_date Maturity, 
-                    OrderReference.ahs_float Strike, 
+                    string Subscriber,
+                    string Source,
+                    string SecurityType,
+                    OrderReference.SubscriberSet Set,
+                    string Request,
+                    string Item,
+                    string Isin,
+                    string Cusip,
+                    string Mic,
+                    string Sedol,
+                    string Ric,
+                    string BBId,
+                    string BBTicker,
+                    string BBMkt,
+                    string BBMktSector,
+                    string CountryIssue,
+                    string Ccy,
+                    string Name,
+                    OrderReference.ahs_date Maturity,
+                    OrderReference.ahs_float Strike,
                     string PutCall)
         {
             return base.Channel.OrderMiscAsync(Subscriber, Source, SecurityType, Set, Request, Item, Isin, Cusip, Mic, Sedol, Ric, BBId, BBTicker, BBMkt, BBMktSector, CountryIssue, Ccy, Name, Maturity, Strike, PutCall);
         }
-        
+
         public System.Threading.Tasks.Task<OrderReference.Status> OrderStatusAsync(int OrderId)
         {
             return base.Channel.OrderStatusAsync(OrderId);
         }
-        
+
         public virtual System.Threading.Tasks.Task OpenAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
-        
+
         public virtual System.Threading.Tasks.Task CloseAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
-        
+
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.order_wsSoap))
@@ -853,7 +853,7 @@ namespace OrderReference
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
-        
+
         private static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             if ((endpointConfiguration == EndpointConfiguration.order_wsSoap))
@@ -866,12 +866,12 @@ namespace OrderReference
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
-        
+
         public enum EndpointConfiguration
         {
-            
+
             order_wsSoap,
-            
+
             order_wsSoap12,
         }
     }

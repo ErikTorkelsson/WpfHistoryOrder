@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfTest.Services
+namespace HistoryClient.Services
 {
     public class ItemService : IItemService
     {
@@ -37,16 +37,20 @@ namespace WpfTest.Services
             return HandledItems;
         }
 
-        public static string ConcatString(string _string)
+        private static string ConcatString(string _string)
         {
             var trimmed = _string.Trim();
             trimmed = trimmed.Replace("\r", "");
             var index = trimmed.IndexOf(" ");
-            if (index != -1)
+            if (index != -1 && !trimmed.Contains("_"))
             {
                 StringBuilder sb = new StringBuilder(trimmed);
                 sb[index] = '_';
                 trimmed = sb.ToString();
+                trimmed = trimmed.Replace(" ", "");
+            }
+            else if (index != -1 && trimmed.Contains("_"))
+            {
                 trimmed = trimmed.Replace(" ", "");
             }
 

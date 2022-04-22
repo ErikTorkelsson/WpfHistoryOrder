@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using WpfTest.Entities;
+using HistoryClient.Entities;
 
-namespace WpfTest.Services
+namespace HistoryClient.Services
 {
     public interface IOrderService
     {

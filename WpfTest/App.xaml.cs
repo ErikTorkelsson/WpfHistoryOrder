@@ -6,9 +6,11 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using WpfTest.Services;
+using HistoryClient.Services;
+using OrderReference;
+using ItemsService;
 
-namespace WpfTest
+namespace HistoryClient
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -27,6 +29,8 @@ namespace WpfTest
             services.AddSingleton<MainWindow>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddSingleton<IItemService, ItemService>();
+            services.AddSingleton<order_wsSoap>(s => new order_wsSoapClient(order_wsSoapClient.EndpointConfiguration.order_wsSoap));
+            services.AddSingleton<items_wsSoap>(s => new items_wsSoapClient(items_wsSoapClient.EndpointConfiguration.items_wsSoap));
         }
         private void OnStartup(object sender, StartupEventArgs e)
         {

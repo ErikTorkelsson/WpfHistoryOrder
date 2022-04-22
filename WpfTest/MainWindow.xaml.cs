@@ -16,10 +16,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WpfTest.Entities;
-using WpfTest.Services;
+using HistoryClient.Entities;
+using HistoryClient.Services;
 
-namespace WpfTest
+namespace HistoryClient
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -80,7 +80,7 @@ namespace WpfTest
             }
 
             Spinner.Spin = false;
-            Spinner.Visibility = Visibility.Hidden;
+            Spinner.Visibility = Visibility.Collapsed;
             StatusText.Text = "All tasks are finished";
             CopyBtn.Visibility = Visibility.Visible;
             CopyToTextBtn.Visibility = Visibility.Visible;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WpfTest.Services
+namespace HistoryClient.Services
 {
     public interface IItemService
     {

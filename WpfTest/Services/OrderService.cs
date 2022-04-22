@@ -10,23 +10,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Windows.ApplicationModel.DataTransfer;
-using WpfTest.Entities;
+using HistoryClient.Entities;
 
-namespace WpfTest.Services
+namespace HistoryClient.Services
 {
     public class OrderService : IOrderService
     {
-        order_wsSoapClient ordersClient;
+        order_wsSoap ordersClient;
+        items_wsSoap itemsClient;
 
-        public OrderService()
+        public OrderService(order_wsSoap _ordersClient, items_wsSoap _itemsClient)
         {
-            ordersClient = new order_wsSoapClient(order_wsSoapClient.EndpointConfiguration.order_wsSoap);
+            ordersClient = _ordersClient;     
+            itemsClient = _itemsClient;
         }
         public async IAsyncEnumerable<Order> SendOrder(List<string> items)
         {
-            //var orders = new List<Order>();
-            //order_wsSoapClient ordersClient = new order_wsSoapClient(order_wsSoapClient.EndpointConfiguration.order_wsSoap);
-
             foreach (var item in items)
             {
                 var securityType = await LookupSecurityTypeFromItem(item);
@@ -35,10 +34,8 @@ namespace WpfTest.Services
                 {
                     var rowsPre =  await GetAffectedRows("BB", item);
 
-                    //int orderId = await ordersClient.OrderMiscAsync("AHS_ADMIN", "BB", securityType, null, "HISTORY", item,
-                    //null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-
-                    int orderId = 1;
+                    int orderId = await ordersClient.OrderMiscAsync("AHS_ADMIN", "BB", securityType, null, "HISTORY", item,
+                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
                     var order = new Order(item, orderId, rowsPre);
                     order.Message = "No existing item found, No existing item found, No existing item found";
@@ -57,7 +54,7 @@ namespace WpfTest.Services
 
         private async Task<string> LookupSecurityTypeFromItem(string item)
         {
-            var itemsClient = new items_wsSoapClient(items_wsSoapClient.EndpointConfiguration.items_wsSoap);
+            //var itemsClient = new items_wsSoapClient(items_wsSoapClient.EndpointConfiguration.items_wsSoap);
             var result = await itemsClient.RequestItemsAsync(
                 "6.0", "BB", null, new string[] { "omxs30_index" }, null, null, null);
             var matchingItem = result.items;
@@ -82,9 +79,7 @@ namespace WpfTest.Services
             for (var i = 0; i < 12; i++)
             {
                 // kolla status
-                //orderStatus = await ordersClient.OrderStatusAsync(order.OrderId);
-
-                orderStatus.Code = "PROCESSED";
+                orderStatus = await ordersClient.OrderStatusAsync(order.OrderId);
 
                 if (orderStatus.Code == "PROCESSED")
                 {
@@ -180,7 +175,7 @@ namespace WpfTest.Services
                     "</tr>";
             }
             string htmlFragment =
-                "<html>"+
+                "<html>" +
                 "<style>table, th, td {border: 1px solid black;}</ style > " +
                 "<body>" +
                 "<table style=\"width:100%\">" +
