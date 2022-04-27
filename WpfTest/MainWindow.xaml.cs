@@ -62,6 +62,7 @@ namespace HistoryClient
         {
             Spinner.Spin = true;
             Spinner.Visibility = Visibility.Visible;
+            CancelBtn.Visibility = Visibility.Visible;
             StatusText.Text = "Placing Orders";
             var placedOrders = _orderService.SendOrder(items.ToList());
             await foreach (var order in placedOrders)
@@ -81,6 +82,7 @@ namespace HistoryClient
 
             Spinner.Spin = false;
             Spinner.Visibility = Visibility.Collapsed;
+            CancelBtn.Visibility = Visibility.Collapsed;
             StatusText.Text = "All tasks are finished";
             CopyBtn.Visibility = Visibility.Visible;
             CopyToTextBtn.Visibility = Visibility.Visible;

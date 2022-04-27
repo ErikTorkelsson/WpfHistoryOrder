@@ -11,18 +11,21 @@ using System.Threading.Tasks;
 using System.Windows;
 using Windows.ApplicationModel.DataTransfer;
 using HistoryClient.Entities;
+using HistoryClient.Repositories;
 
 namespace HistoryClient.Services
 {
     public class OrderService : IOrderService
     {
-        order_wsSoap ordersClient;
-        items_wsSoap itemsClient;
+        order_wsSoap _ordersClient;
+        items_wsSoap _itemsClient;
+        IOrderRepository _orderRepository;
 
-        public OrderService(order_wsSoap _ordersClient, items_wsSoap _itemsClient)
+        public OrderService(order_wsSoap ordersClient, items_wsSoap itemsClient, IOrderRepository orderRepository)
         {
-            ordersClient = _ordersClient;     
-            itemsClient = _itemsClient;
+            _ordersClient = ordersClient;     
+            _itemsClient = itemsClient;
+            _orderRepository = orderRepository;
         }
         public async IAsyncEnumerable<Order> SendOrder(List<string> items)
         {
@@ -32,20 +35,19 @@ namespace HistoryClient.Services
 
                 if (securityType != "NOT FOUND")
                 {
-                    var rowsPre =  await GetAffectedRows("BB", item);
+                    var rowsPre =  await _orderRepository.GetAffectedRows("BB", item);
 
-                    int orderId = await ordersClient.OrderMiscAsync("AHS_ADMIN", "BB", securityType, null, "HISTORY", item,
+                    int orderId = await _ordersClient.OrderMiscAsync("AHS_ADMIN", "BB", securityType, null, "HISTORY", item,
                     null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
                     var order = new Order(item, orderId, rowsPre);
-                    order.Message = "No existing item found, No existing item found, No existing item found";
-                    //orders.Add(order);
+
                     yield return order;
                 }
                 else
                 {
                     var order = new Order(item, "No existing item found", "History order requires existing item");
-                    //orders.Add(order);
+
                     yield return order;
                 }
             }
@@ -55,8 +57,8 @@ namespace HistoryClient.Services
         private async Task<string> LookupSecurityTypeFromItem(string item)
         {
             //var itemsClient = new items_wsSoapClient(items_wsSoapClient.EndpointConfiguration.items_wsSoap);
-            var result = await itemsClient.RequestItemsAsync(
-                "6.0", "BB", null, new string[] { "omxs30_index" }, null, null, null);
+            var result = await _itemsClient.RequestItemsAsync(
+                "6.0", "BB", null, new string[] { item }, null, null, null);
             var matchingItem = result.items;
 
             if (matchingItem.Count() > 0)
@@ -79,13 +81,14 @@ namespace HistoryClient.Services
             for (var i = 0; i < 12; i++)
             {
                 // kolla status
-                orderStatus = await ordersClient.OrderStatusAsync(order.OrderId);
+                orderStatus = await _ordersClient.OrderStatusAsync(order.OrderId);
 
                 if (orderStatus.Code == "PROCESSED")
                 {
-                    var rowsAfter = await GetAffectedRows("BB", order.Item);
+                    var rowsAfter = await _orderRepository.GetAffectedRows("BB", order.Item);
                     var affectedRows = Math.Abs(order.RowsPre - rowsAfter);
                     order.Message = $"Affected rows: {affectedRows}";
+                    order.Status = orderStatus.Code;
                     return order;
                 }
                 else if (orderStatus.Code != "PROCESSING")
@@ -123,31 +126,6 @@ namespace HistoryClient.Services
 
                 yield return finishedOrderTask;
             }
-        }
-
-        private async Task<int> GetAffectedRows(string source, string itemName)
-        {
-            var sql = "SELECT COUNT(1) FROM ahs_data_float WHERE source = @Source AND item = @Item";
-            var parameters = new
-            {
-                Source = source,
-                Item = itemName
-            };
-            await using var connection =
-                new SqlConnection("Persist Security Info = False; Integrated Security = SSPI; server = hadley; database = seb_ahshist_20210201_anna");
-            IEnumerable<int> result = new List<int>();
-            try
-            {
-                await connection.OpenAsync();
-                result = await connection
-                    .QueryAsync<int>(sql,
-                        parameters, null, 30);
-            }
-            catch (Exception exception)
-            {
-                throw;
-            }
-            return result.FirstOrDefault();
         }
 
         public void CopyTableToText(List<Order> orders)

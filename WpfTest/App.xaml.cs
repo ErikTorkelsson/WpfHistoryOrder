@@ -9,6 +9,7 @@ using System.Windows;
 using HistoryClient.Services;
 using OrderReference;
 using ItemsService;
+using HistoryClient.Repositories;
 
 namespace HistoryClient
 {
@@ -29,6 +30,7 @@ namespace HistoryClient
             services.AddSingleton<MainWindow>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddSingleton<IItemService, ItemService>();
+            services.AddSingleton<IOrderRepository, OrderRepository>();
             services.AddSingleton<order_wsSoap>(s => new order_wsSoapClient(order_wsSoapClient.EndpointConfiguration.order_wsSoap));
             services.AddSingleton<items_wsSoap>(s => new items_wsSoapClient(items_wsSoapClient.EndpointConfiguration.items_wsSoap));
         }

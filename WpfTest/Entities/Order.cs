@@ -20,7 +20,7 @@ namespace HistoryClient.Entities
             Item = item;
             OrderId = orderId;
             Status = "PROCESSING";
-            Message = "";
+            Message = "No message";
             RowsPre = rowsPre;
         }
         public Order(string item, string status, string message)
