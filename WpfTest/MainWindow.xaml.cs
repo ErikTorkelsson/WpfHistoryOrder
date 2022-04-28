@@ -30,6 +30,7 @@ namespace HistoryClient
         IItemService _itemService;
         ObservableCollection<Order> orders;
         ObservableCollection<string> items;
+        CancellationTokenSource _tokenSource;
 
         public MainWindow(IOrderService orderService, IItemService itemService)
         {
@@ -41,6 +42,9 @@ namespace HistoryClient
 
             OrdersListView.ItemsSource = orders;
             MyListBox.ItemsSource = items;
+
+            _tokenSource = new CancellationTokenSource();
+
         }
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -60,6 +64,8 @@ namespace HistoryClient
 
         private async Task PlaceOrders()
         {
+            var token = _tokenSource.Token;
+
             Spinner.Spin = true;
             Spinner.Visibility = Visibility.Visible;
             CancelBtn.Visibility = Visibility.Visible;
@@ -72,7 +78,7 @@ namespace HistoryClient
 
             StatusText.Text = "Waiting for orders to process";
 
-            var finnishedOrders = _orderService.AwaitOrderStatus(orders.ToList());
+            var finnishedOrders = _orderService.AwaitOrderStatus(orders.ToList(), token);
             await foreach (var order in finnishedOrders)
             {
                 var newOrder = orders.FirstOrDefault(o => o.OrderId == order.OrderId);
@@ -86,6 +92,7 @@ namespace HistoryClient
             StatusText.Text = "All tasks are finished";
             CopyBtn.Visibility = Visibility.Visible;
             CopyToTextBtn.Visibility = Visibility.Visible;
+            ClearOrdersBtn.Visibility = Visibility.Visible;
         }
 
         private void RemoveItemBtn_Click(object sender, RoutedEventArgs e)
@@ -115,6 +122,21 @@ namespace HistoryClient
         {
             var orderList = orders.ToList();
             _orderService.CopyTableToText(orderList);
+        }
+
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            _tokenSource.Cancel();
+        }
+
+        private void ClearOrdersBtn_Click(object sender, RoutedEventArgs e)
+        {
+            orders.Clear();
+            ClearOrdersBtn.Visibility = Visibility.Collapsed;
+            StatusText.Visibility = Visibility.Collapsed;
+            CopyBtn.Visibility = Visibility.Collapsed;
+            CopyToTextBtn.Visibility = Visibility.Collapsed;
+
         }
     }
 }

@@ -69,9 +69,10 @@
                         <TextBlock x:Name="StatusText" Margin="10" FontSize="24"></TextBlock>
                         <fa:ImageAwesome x:Name="Spinner" Icon="Refresh" Spin="False" Height="30" Width="30" Visibility="Hidden" Margin="10" />
                     </StackPanel>
-                    <Button x:Name="CancelBtn" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Cancel</Button>
+                    <Button x:Name="CancelBtn" Click="CancelBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Cancel</Button>
                     <Button x:Name="CopyBtn" Click="CopyBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Copy to clipboard</Button>
                     <Button x:Name="CopyToTextBtn" Click="CopyToTextBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Copy as text</Button>
+                    <Button x:Name="ClearOrdersBtn" Click="ClearOrdersBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Clear list</Button>
                 </StackPanel>
             </TabItem>
         </TabControl>

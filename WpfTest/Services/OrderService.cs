@@ -12,6 +12,7 @@ using System.Windows;
 using Windows.ApplicationModel.DataTransfer;
 using HistoryClient.Entities;
 using HistoryClient.Repositories;
+using System.Runtime.CompilerServices;
 
 namespace HistoryClient.Services
 {
@@ -75,10 +76,10 @@ namespace HistoryClient.Services
             }
         }
 
-        private async Task<Order> CheckOrderStatus(Order order)
+        private async Task<Order> CheckOrderStatus(Order order, CancellationToken cancellationToken)
         {
             var orderStatus = new Status();
-            for (var i = 0; i < 12; i++)
+            while(!cancellationToken.IsCancellationRequested)
             {
                 // kolla status
                 orderStatus = await _ordersClient.OrderStatusAsync(order.OrderId);
@@ -105,7 +106,8 @@ namespace HistoryClient.Services
             return order;
         }
 
-        public async IAsyncEnumerable<Order> AwaitOrderStatus(IEnumerable<Order> orders)
+        public async IAsyncEnumerable<Order> AwaitOrderStatus(IEnumerable<Order> orders, [EnumeratorCancellation]
+                              CancellationToken cancellationToken = default)
         {
             var runningOrders = new List<Task<Order>>();
 
@@ -113,12 +115,12 @@ namespace HistoryClient.Services
             {
                 if (order.Status == "PROCESSING")
                 {
-                    var task = CheckOrderStatus(order);
+                    var task = CheckOrderStatus(order, cancellationToken);
                     runningOrders.Add(task);
                 }
             }
 
-            while (runningOrders.Count > 0)
+            while (runningOrders.Count > 0 && !cancellationToken.IsCancellationRequested)
             {
                 var OrderTask = await Task.WhenAny(runningOrders);
                 var finishedOrderTask = await OrderTask;
