@@ -38,8 +38,9 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <Button Name="RemoveItemBtn" Click="RemoveItemBtn_Click" Height="30" Width="140" Margin="0,0,20,0">Remove from list</Button>
-                            <Button Name="PlaceOrderBtn" Click="PlaceOrderBtn_Click" Height="30" Width="110">Place order</Button>
+                            <Button Name="RemoveItemBtn" Click="RemoveItemBtn_Click" Height="30" Width="Auto" Margin="0,0,10,0">Remove Selected</Button>
+                            <Button Name="ClearItemsBtn" Click="ClearItemsBtn_Click" Height="30" Width="auto" Margin=" 0,0,10,0">Clear</Button>
+                            <Button Name="PlaceOrderBtn" Click="PlaceOrderBtn_Click" Height="30" Width="auto">Place order</Button>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

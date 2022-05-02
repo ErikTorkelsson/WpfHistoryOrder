@@ -28,8 +28,8 @@ namespace HistoryClient
     {
         IOrderService _orderService;
         IItemService _itemService;
-        ObservableCollection<Order> orders;
-        ObservableCollection<string> items;
+        ObservableCollection<Order> Orders;
+        ObservableCollection<string> Items;
         CancellationTokenSource _tokenSource;
 
         public MainWindow(IOrderService orderService, IItemService itemService)
@@ -37,11 +37,11 @@ namespace HistoryClient
             InitializeComponent();
             _orderService = orderService;
             _itemService = itemService;
-            orders = new ObservableCollection<Order>();
-            items = new ObservableCollection<string>();
+            Orders = new ObservableCollection<Order>();
+            Items = new ObservableCollection<string>();
 
-            OrdersListView.ItemsSource = orders;
-            MyListBox.ItemsSource = items;
+            OrdersListView.ItemsSource = Orders;
+            MyListBox.ItemsSource = Items;
 
             _tokenSource = new CancellationTokenSource();
 
@@ -50,7 +50,7 @@ namespace HistoryClient
         {
             var itemsFromTextBox = TextBorre.Text;
             var handledItems = _itemService.HandleItems(itemsFromTextBox);
-            handledItems.ForEach(item => items.Add(item));
+            handledItems.ForEach(item => Items.Add(item));
 
             TextBorre.Clear();
             
@@ -70,18 +70,18 @@ namespace HistoryClient
             Spinner.Visibility = Visibility.Visible;
             CancelBtn.Visibility = Visibility.Visible;
             StatusText.Text = "Placing Orders";
-            var placedOrders = _orderService.SendOrder(items.ToList());
+            var placedOrders = _orderService.SendOrder(Items.ToList());
             await foreach (var order in placedOrders)
             {
-                orders.Add(order);
+                Orders.Add(order);
             }
 
             StatusText.Text = "Waiting for orders to process";
 
-            var finnishedOrders = _orderService.AwaitOrderStatus(orders.ToList(), token);
+            var finnishedOrders = _orderService.AwaitOrderStatus(Orders.ToList(), token);
             await foreach (var order in finnishedOrders)
             {
-                var newOrder = orders.FirstOrDefault(o => o.OrderId == order.OrderId);
+                var newOrder = Orders.FirstOrDefault(o => o.OrderId == order.OrderId);
                 newOrder = order;
                 OrdersListView.Items.Refresh();
             }
@@ -102,7 +102,7 @@ namespace HistoryClient
                 var item = MyListBox.SelectedItem;
                 if (item != null)
                 {
-                    items.Remove(item.ToString());
+                    Items.Remove(item.ToString());
                 }
             }
             catch
@@ -113,14 +113,14 @@ namespace HistoryClient
 
         private void CopyBtn_Click(object sender, RoutedEventArgs e)
         {
-            var orderList = orders.ToList();
+            var orderList = Orders.ToList();
             _orderService.CreateHtmlTable(orderList);
 
         }
 
         private void CopyToTextBtn_Click(object sender, RoutedEventArgs e)
         {
-            var orderList = orders.ToList();
+            var orderList = Orders.ToList();
             _orderService.CopyTableToText(orderList);
         }
 
@@ -131,12 +131,17 @@ namespace HistoryClient
 
         private void ClearOrdersBtn_Click(object sender, RoutedEventArgs e)
         {
-            orders.Clear();
+            Orders.Clear();
             ClearOrdersBtn.Visibility = Visibility.Collapsed;
             StatusText.Visibility = Visibility.Collapsed;
             CopyBtn.Visibility = Visibility.Collapsed;
             CopyToTextBtn.Visibility = Visibility.Collapsed;
 
+        }
+
+        private void ClearItemsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Items.Clear();
         }
     }
 }

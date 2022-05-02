@@ -47,7 +47,7 @@ namespace HistoryClient.Services
                 }
                 else
                 {
-                    var order = new Order(item, "No existing item found", "History order requires existing item");
+                    var order = new Order(item, "No existing item", "History order requires existing item");
 
                     yield return order;
                 }
@@ -136,7 +136,7 @@ namespace HistoryClient.Services
 
             foreach (var order in orders)
             {
-                orderResult += $"Item:{order.Item} Status:{order.Status} Message: {order.Message},\n";
+                orderResult += $"Item: {order.Item}, Status: {order.Status}, Message: {order.Message}.\n";
             }
 
             System.Windows.Clipboard.SetText(orderResult);
@@ -158,7 +158,7 @@ namespace HistoryClient.Services
                 "<html>" +
                 "<style>table, th, td {border: 1px solid black;}</ style > " +
                 "<body>" +
-                "<table style=\"width:100%\">" +
+                "<table style=\"width:70%\">" +
                     "<tr>" +
                         "<th>Item</th>" +
                         "<th>Status</th>" +
@@ -184,7 +184,7 @@ namespace HistoryClient.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                MessageBox.Show("Failed to copy");
             }
         }
     }
