@@ -19,7 +19,7 @@ namespace HistoryClient.Repositories
         }
         public async Task<int> GetAffectedRows(string source, string itemName)
         {
-            var connectionstring = Configuration.GetConnectionString("BloggingDatabase");
+            var connectionstring = Configuration.GetConnectionString("DefaultConnection");
             var sql = "SELECT COUNT(1) FROM ahs_data_float WHERE source = @Source AND item = @Item";
             var parameters = new
             {
