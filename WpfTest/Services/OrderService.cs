@@ -36,12 +36,22 @@ namespace HistoryClient.Services
 
                 if (securityType != "NOT FOUND")
                 {
+                    Order order;
+
                     var rowsPre =  await _orderRepository.GetAffectedRows("BB", item);
 
-                    int orderId = await _ordersClient.OrderMiscAsync("AHS_ADMIN", "BB", securityType, null, "HISTORY", item,
-                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                    try
+                    {
+                        int orderId = await _ordersClient.OrderMiscAsync("AHS_ADMIN", "BB", securityType, null, "HISTORY", item,
+                        null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
-                    var order = new Order(item, orderId, rowsPre);
+                        order = new Order(item, orderId, rowsPre);
+                    }
+                    catch
+                    {
+                        order = new Order(item, "None" , "Item is not valid");
+                    }
+
 
                     yield return order;
                 }
