@@ -38,14 +38,14 @@ namespace HistoryClient.Services
                 {
                     Order order;
 
-                    var rowsPre =  await _orderRepository.GetAffectedRows("BB", item);
+                    var dateTime = DateTime.UtcNow.ToString();
 
                     try
                     {
                         int orderId = await _ordersClient.OrderMiscAsync("AHS_ADMIN", "BB", securityType, null, "HISTORY", item,
                         null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
-                        order = new Order(item, orderId, rowsPre);
+                        order = new Order(item, orderId, dateTime);
                     }
                     catch
                     {
@@ -96,8 +96,9 @@ namespace HistoryClient.Services
 
                 if (orderStatus.Code == "PROCESSED")
                 {
-                    var rowsAfter = await _orderRepository.GetAffectedRows("BB", order.Item);
-                    var affectedRows = Math.Abs(order.RowsPre - rowsAfter);
+                    //var rowsAfter = await _orderRepository.GetAffectedRows("BB", order.Item , order.Date);
+                    //var affectedRows = Math.Abs(order.RowsPre - rowsAfter);
+                    var affectedRows = await _orderRepository.GetAffectedRows("BB", order.Item, order.Date);
                     order.Message = $"Affected rows: {affectedRows}";
                     order.Status = orderStatus.Code;
                     return order;

@@ -12,16 +12,16 @@ namespace HistoryClient.Entities
         public int OrderId { get; set; }
         public string Status { get; set; }
         public string Message { get; set; }
-        public int RowsPre { get; set; }
-        public int RowsAfter { get; set; }
+        public string Date { get; set; }
 
-        public Order(string item , int orderId, int rowsPre)
+
+        public Order(string item , int orderId, string date)
         {
             Item = item;
             OrderId = orderId;
             Status = "PROCESSING";
             Message = "";
-            RowsPre = rowsPre;
+            Date = date;
         }
         public Order(string item, string status, string message)
         {

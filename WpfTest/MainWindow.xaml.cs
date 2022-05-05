@@ -58,8 +58,16 @@ namespace HistoryClient
         private async void PlaceOrderBtn_Click(object sender, RoutedEventArgs e)
         {
             MyTabControl.SelectedIndex = 1;
-            var task = PlaceOrders();
-            await task;
+
+            try
+            {
+                var task = PlaceOrders();
+                await task;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not place order.\n" + ex.Message);
+            }
         }
 
         private async Task PlaceOrders()

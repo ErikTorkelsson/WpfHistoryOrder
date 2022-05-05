@@ -17,14 +17,21 @@ namespace HistoryClient.Repositories
         {
             Configuration = configuration;
         }
-        public async Task<int> GetAffectedRows(string source, string itemName)
+        public async Task<int> GetAffectedRows(string source, string itemName, string date)
         {
             var connectionstring = Configuration.GetConnectionString("DefaultConnection");
-            var sql = "SELECT COUNT(1) FROM ahs_data_float WHERE source = @Source AND item = @Item";
+            //var sql = "SELECT COUNT(1) FROM ahs_data_float WHERE source = @Source AND item = @Item";
+            var sql = "SELECT count(1)" +
+                    "FROM ahs_data_float" +
+                    "WHERE source = @Source" +
+                    "AND item = @Item" +
+                    "AND freq = 'D'" +
+                    "AND modified >= @Date";
             var parameters = new
             {
                 Source = source,
-                Item = itemName
+                Item = itemName,
+                Date = date
             };
             await using var connection =
                 new SqlConnection(connectionstring);

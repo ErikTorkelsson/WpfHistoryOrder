@@ -47,7 +47,7 @@ namespace HistoryClient.Tests.UnitTests.OrderServiceTests
             fakeAhsHistItems.items = fakeItems;
 
             mockItemsClient.Setup(x => x.RequestItemsAsync("6.0", "BB", null, It.IsAny<string[]>(), null, null, null).Result).Returns(fakeAhsHistItems);
-            mockIOrderRepository.Setup(x => x.GetAffectedRows(It.IsAny<string>(), It.IsAny<string>()).Result).Returns(0);
+            mockIOrderRepository.Setup(x => x.GetAffectedRows(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()).Result).Returns(0);
             mockOrderClient.Setup(x => x.OrderMiscAsync("AHS_ADMIN", "BB", It.IsAny<string>(), null, "HISTORY", It.IsAny<string>(),
                     null, null, null, null, null, null, null, null, null, null, null, null, null, null, null).Result).Returns(1);
             //Act
@@ -61,8 +61,8 @@ namespace HistoryClient.Tests.UnitTests.OrderServiceTests
             //Assert
             var fakeOrdersList = fakeOrders.ToList();
 
-            var obj1Str = JsonConvert.SerializeObject(new Order("Test_Item1", 1, 0));
-            var obj2Str = JsonConvert.SerializeObject(new Order("Test_Item2", 1, 0));
+            var obj1Str = JsonConvert.SerializeObject(new Order("Test_Item1", 1, DateTime.UtcNow.ToString()));
+            var obj2Str = JsonConvert.SerializeObject(new Order("Test_Item2", 1, DateTime.UtcNow.ToString()));
             Assert.Collection(fakeOrdersList,
                 item => Assert.Equal(obj1Str, JsonConvert.SerializeObject(item)),
                 item => Assert.Equal(obj2Str, JsonConvert.SerializeObject(item))
