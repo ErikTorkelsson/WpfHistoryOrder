@@ -66,7 +66,7 @@ namespace HistoryClient
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Could not place order.\n" + ex.Message);
+                MessageBox.Show("Something went wrong when placing order.\n" + ex.Message);
             }
         }
 
@@ -74,10 +74,8 @@ namespace HistoryClient
         {
             var token = _tokenSource.Token;
 
-            Spinner.Spin = true;
-            Spinner.Visibility = Visibility.Visible;
-            CancelBtn.Visibility = Visibility.Visible;
-            StatusText.Text = "Placing Orders";
+            UpdateUiStart();
+
             var placedOrders = _orderService.SendOrder(Items.ToList());
             await foreach (var order in placedOrders)
             {
@@ -94,13 +92,7 @@ namespace HistoryClient
                 OrdersListView.Items.Refresh();
             }
 
-            Spinner.Spin = false;
-            Spinner.Visibility = Visibility.Collapsed;
-            CancelBtn.Visibility = Visibility.Collapsed;
-            StatusText.Text = "All tasks are finished";
-            CopyBtn.Visibility = Visibility.Visible;
-            CopyToTextBtn.Visibility = Visibility.Visible;
-            ClearOrdersBtn.Visibility = Visibility.Visible;
+            UpdateUiFinished();
         }
 
         private void RemoveItemBtn_Click(object sender, RoutedEventArgs e)
@@ -124,6 +116,25 @@ namespace HistoryClient
             var orderList = Orders.ToList();
             _orderService.CreateHtmlTable(orderList);
 
+        }
+
+        private void UpdateUiFinished()
+        {
+            Spinner.Spin = false;
+            Spinner.Visibility = Visibility.Collapsed;
+            CancelBtn.Visibility = Visibility.Collapsed;
+            StatusText.Text = "All tasks are finished";
+            CopyBtn.Visibility = Visibility.Visible;
+            CopyToTextBtn.Visibility = Visibility.Visible;
+            ClearOrdersBtn.Visibility = Visibility.Visible;
+        }
+
+        private void UpdateUiStart()
+        {
+            Spinner.Spin = true;
+            Spinner.Visibility = Visibility.Visible;
+            CancelBtn.Visibility = Visibility.Visible;
+            StatusText.Text = "Placing Orders";
         }
 
         private void CopyToTextBtn_Click(object sender, RoutedEventArgs e)

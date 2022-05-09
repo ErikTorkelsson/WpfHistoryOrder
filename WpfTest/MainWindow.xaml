@@ -47,16 +47,16 @@
             </TabItem>
             <TabItem Header="Running Orders">
                 <StackPanel>
-                    <ListView Margin="30" Name="OrdersListView" MinWidth="200" Height="Auto" MaxHeight="250" FontSize="16">
+                    <ListView Margin="30" Name="OrdersListView" MinWidth="200" Height="Auto" MaxHeight="350" FontSize="16">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Item" Width="200" DisplayMemberBinding="{Binding Item}" />
                                 <GridViewColumn Header="OrderId" Width="150" DisplayMemberBinding="{Binding OrderId}" />
                                 <GridViewColumn Header="Status" Width="150" DisplayMemberBinding="{Binding Status}" />
-                                <GridViewColumn Header="Message" Width="300" DisplayMemberBinding="{Binding Message}" >
+                                <GridViewColumn Header="Message" Width="270" >
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock TextWrapping="Wrap" ></TextBlock>
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding Message}" ></TextBlock>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -67,10 +67,12 @@
                         <TextBlock x:Name="StatusText" Margin="10" FontSize="24"></TextBlock>
                         <fa:ImageAwesome x:Name="Spinner" Icon="Refresh" Spin="False" Height="30" Width="30" Visibility="Collapsed" Margin="10" />
                     </StackPanel>
-                    <Button x:Name="CancelBtn" Click="CancelBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Cancel</Button>
-                    <Button x:Name="CopyBtn" Click="CopyBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Copy to clipboard</Button>
-                    <Button x:Name="CopyToTextBtn" Click="CopyToTextBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Copy as text</Button>
-                    <Button x:Name="ClearOrdersBtn" Click="ClearOrdersBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Clear list</Button>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="CancelBtn" Click="CancelBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Cancel</Button>
+                        <Button x:Name="CopyBtn" Click="CopyBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Copy to clipboard</Button>
+                        <Button x:Name="CopyToTextBtn" Click="CopyToTextBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Copy as text</Button>
+                        <Button x:Name="ClearOrdersBtn" Click="ClearOrdersBtn_Click" Margin="3" Width="150" Visibility="Collapsed" HorizontalAlignment="Center">Clear list</Button>
+                    </StackPanel>
                 </StackPanel>
             </TabItem>
         </TabControl>

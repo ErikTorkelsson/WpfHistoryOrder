@@ -49,15 +49,21 @@ namespace HistoryClient.Services
                     }
                     catch
                     {
-                        order = new Order(item, "None" , "Item is not valid");
+                        order = new Order(item, "Order not placed", "Item is not valid");
                     }
 
 
                     yield return order;
                 }
+                else if(securityType == "ERROR")
+                {
+                    var order = new Order(item, "Order not placed", "Unable to find securityType for item");
+
+                    yield return order;
+                }
                 else
                 {
-                    var order = new Order(item, "No existing item", "History order requires existing item");
+                    var order = new Order(item, "Order not placed", "No existing item found, History order requires existing item");
 
                     yield return order;
                 }
@@ -67,23 +73,30 @@ namespace HistoryClient.Services
 
         private async Task<string> LookupSecurityTypeFromItem(string item)
         {
-            //var itemsClient = new items_wsSoapClient(items_wsSoapClient.EndpointConfiguration.items_wsSoap);
-            var result = await _itemsClient.RequestItemsAsync(
+            try
+            {
+                var result = await _itemsClient.RequestItemsAsync(
                 "6.0", "BB", null, new string[] { item }, null, null, null);
-            var matchingItem = result.items;
+                var matchingItem = result.items;
 
-            if (matchingItem.Count() > 0)
-            {
-                var seriesType = matchingItem[0].series_type;
-                var split = seriesType.Split("_");
-                var securityType = split[1];
+                if (matchingItem.Count() > 0)
+                {
+                    var seriesType = matchingItem[0].series_type;
+                    var split = seriesType.Split("_");
+                    var securityType = split[1];
 
-                return securityType;
+                    return securityType;
+                }
+                else
+                {
+                    return "NOT FOUND";
+                }
             }
-            else
+            catch
             {
-                return "NOT FOUND";
+                return "ERROR";
             }
+            
         }
 
         private async Task<Order> CheckOrderStatus(Order order, CancellationToken cancellationToken)
@@ -94,7 +107,7 @@ namespace HistoryClient.Services
                 try
                 {
                     // kolla status
-                    orderStatus = await _ordersClient.OrderStatusAsync(order.OrderId);
+                    orderStatus = await _ordersClient.OrderStatusAsync(order.OrderId);                    
                 }
                 catch (Exception ex)
                 {
@@ -104,8 +117,6 @@ namespace HistoryClient.Services
 
                 if (orderStatus.Code == "PROCESSED")
                 {
-                    //var rowsAfter = await _orderRepository.GetAffectedRows("BB", order.Item , order.Date);
-                    //var affectedRows = Math.Abs(order.RowsPre - rowsAfter);
                     var affectedRows = await _orderRepository.GetAffectedRows("BB", order.Item, order.Date);
                     order.Message = $"Affected rows: {affectedRows}";
                     order.Status = orderStatus.Code;
