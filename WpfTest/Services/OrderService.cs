@@ -91,8 +91,16 @@ namespace HistoryClient.Services
             var orderStatus = new Status();
             while(!cancellationToken.IsCancellationRequested)
             {
-                // kolla status
-                orderStatus = await _ordersClient.OrderStatusAsync(order.OrderId);
+                try
+                {
+                    // kolla status
+                    orderStatus = await _ordersClient.OrderStatusAsync(order.OrderId);
+                }
+                catch (Exception ex)
+                {
+                    orderStatus.Code = "unknown";
+                    orderStatus.Message = "failed to fetch status";
+                }
 
                 if (orderStatus.Code == "PROCESSED")
                 {

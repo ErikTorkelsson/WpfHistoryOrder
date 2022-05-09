@@ -53,7 +53,13 @@
                                 <GridViewColumn Header="Item" Width="200" DisplayMemberBinding="{Binding Item}" />
                                 <GridViewColumn Header="OrderId" Width="150" DisplayMemberBinding="{Binding OrderId}" />
                                 <GridViewColumn Header="Status" Width="150" DisplayMemberBinding="{Binding Status}" />
-                                <GridViewColumn Header="Message" Width="700" DisplayMemberBinding="{Binding Message}" />
+                                <GridViewColumn Header="Message" Width="300" DisplayMemberBinding="{Binding Message}" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock TextWrapping="Wrap" ></TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
