@@ -26,15 +26,18 @@ namespace HistoryClient.Repositories
                       AND item = @Item 
                       AND freq = 'D' 
                       AND modified >= @Date";
+
             var parameters = new
             {
                 Source = source,
                 Item = itemName,
                 Date = date
             };
+
             await using var connection =
                 new SqlConnection(connectionstring);
             IEnumerable<int> result = new List<int>();
+
             try
             {
                 await connection.OpenAsync();
@@ -46,6 +49,7 @@ namespace HistoryClient.Repositories
             {
                 throw;
             }
+
             return result.FirstOrDefault();
         }
     }

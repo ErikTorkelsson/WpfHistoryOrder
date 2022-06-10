@@ -33,8 +33,21 @@ namespace HistoryClient.Services
             foreach (var item in items)
             {
                 var securityType = await LookupSecurityTypeFromItem(item);
+               
+                // TODO: Change statuses in securityType to Enums
+                if(securityType == "ERROR")
+                {
+                    var order = new Order(item, "Order not placed", "Unable to find securityType for item");
 
-                if (securityType != "NOT FOUND")
+                    yield return order;
+                }               
+                else if(securityType == "NOT FOUND")
+                {
+                    var order = new Order(item, "Order not placed", "No existing item found, History order requires existing item");
+
+                    yield return order;
+                }
+                else
                 {
                     Order order;
 
@@ -52,18 +65,6 @@ namespace HistoryClient.Services
                         order = new Order(item, "Order not placed", "Item is not valid");
                     }
 
-
-                    yield return order;
-                }
-                else if(securityType == "ERROR")
-                {
-                    var order = new Order(item, "Order not placed", "Unable to find securityType for item");
-
-                    yield return order;
-                }
-                else
-                {
-                    var order = new Order(item, "Order not placed", "No existing item found, History order requires existing item");
 
                     yield return order;
                 }
@@ -129,7 +130,6 @@ namespace HistoryClient.Services
                     return order;
                 }
                 
-                //sleep
                 await Task.Delay(5000);
             }
 
@@ -201,15 +201,12 @@ namespace HistoryClient.Services
 
             string htmlFormat = HtmlFormatHelper.CreateHtmlFormat(htmlFragment);
 
-            // Create a DataPackage object.
             var dataPackage = new DataPackage();
 
-            // Set the content of the DataPackage as HTML format.
             dataPackage.SetHtmlFormat(htmlFormat);
 
             try
             {
-                // Set the DataPackage to the clipboard.
                 Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
             }
             catch (Exception ex)
